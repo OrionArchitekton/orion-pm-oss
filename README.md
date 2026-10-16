@@ -66,7 +66,8 @@ modifies harness settings, creates services, signs in or enables recurring work.
 
 Source and release artifacts are published under the [MIT license](LICENSE).
 Install from GitHub Releases; this version is not published to a package index.
-The composition check observed the exact released orion-browser 0.1.0
+The [composition receipt](docs/releases/browser-composition-0.1.1.json) records
+a check of the public PM 0.1.1 wheel with the exact released orion-browser 0.1.0
 wheel with agent-browser 0.25.4 on the environment above: only the winning PM
 worker read a synthetic public page, released the native lease and completed.
 This is a bounded compatibility receipt, not a browser dependency or a claim

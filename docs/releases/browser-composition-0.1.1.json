@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "observed": "2026-10-15",
+  "pm": {
+    "version": "0.1.1",
+    "source_commit": "34ba59e156c03b95313a7a9e610ebfdc81eb45d7",
+    "wheel_sha256": "54f28272550054c32958c67fd84094b825bb387f91ad3efe3b342d463b9c16c7",
+    "installed_from_anonymous_public_download": true
+  },
+  "browser": {
+    "version": "0.1.0",
+    "wheel_sha256": "ba793c5271dc7f1909f88823be88195b84f43fbbf58e5e9cd39c5efb085a746a",
+    "installed_payload_files_verified": 18,
+    "driver": "agent-browser 0.25.4",
+    "profile": "fresh anonymous synthetic profile"
+  },
+  "environment": {
+    "python": "3.11.14",
+    "platform": "WSL2 Linux",
+    "filesystem": "ext4"
+  },
+  "competition": {
+    "starter_processes": 2,
+    "observed_result_workers": 1,
+    "loser_native_calls": [],
+    "winner_native_calls": [
+      "lease",
+      "connect",
+      "read",
+      "release",
+      "client-close",
+      "status-after-release"
+    ],
+    "target": "https://example.com/",
+    "observed_title": "Example Domain",
+    "final_task_status": "done",
+    "final_claim_state": "absent"
+  },
+  "cleanup": {
+    "native_stop": "clean",
+    "holder_absent": true,
+    "browser_down": true,
+    "endpoint_closed": true,
+    "profile_process_absent": true,
+    "synthetic_profile_removed": true
+  },
+  "scope": "One synthetic anonymous browser read. No signed-in workflows, cross-host fencing, other browser versions or private runtime adoption are established."
+}
