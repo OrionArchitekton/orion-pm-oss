@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "orion-pm"
+version = "0.1.0"
+description = "Local task coordination for cooperating agents"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{name = "Dan Mercede"}]
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+orion-pm = "orion_pm.cli:main"
+
+[tool.setuptools]
+packages = ["orion_pm"]
+
+[project.urls]
+Repository = "https://github.com/OrionArchitekton/orion-pm-oss"
+Issues = "https://github.com/OrionArchitekton/orion-pm-oss/issues"
