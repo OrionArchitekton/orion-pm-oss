@@ -405,6 +405,54 @@ class CoreCLI(unittest.TestCase):
         self.assertTrue(any(f['code'] == 'limit_exceeded' for f in data['claim_issues']))
         self.assertEqual(data['queue'], [])
 
+    def test_review_overdue_preserves_claim_scan_uncertainty(self):
+        self.init()
+        for index in range(3):
+            self.add(f'task-{index}')
+            self.call('claim', f'task-{index}', '--holder', 'worker')
+        before = self.snapshot()
+        result = self.injected(['overdue'], "with mock.patch.object(claim,'MAX_CORPUS_BYTES',1):\n    raise SystemExit(cli.main())")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        data = json.loads(result.stdout)['data']
+        self.assertEqual(data['completeness'], 'partial')
+        self.assertTrue(any(issue['code'] == 'limit_exceeded' for issue in data['issues']))
+        self.assertEqual(len(data['items']), 3)
+        self.assertTrue(all(item['claim']['state'] == 'unknown' for item in data['items']))
+        self.assertEqual(before, self.snapshot())
+
+    def test_review_stale_surface_uses_overdue_dispositions(self):
+        self.init()
+        for task_id in ('expired', 'unknown', 'orphan'):
+            self.add(task_id)
+            self.call('claim', task_id, '--holder', 'worker')
+        self.expire('expired')
+        (self.home / 'claims/unknown.lock').write_text('{')
+        (self.home / 'claims/orphan.lock').unlink()
+        overdue = {item['task_id']: item for item in self.call('overdue')['data']['items']}
+        self.assertEqual({k: v['issue'] for k, v in overdue.items()},
+                         {'expired': 'surface', 'unknown': 'surface', 'orphan': 'orphan'})
+        stale = {item['task_id']: item for item in self.call('surface')['data']['stale']}
+        self.assertEqual(stale, overdue)
+
+    def test_review_human_surface_bounds_escaped_unicode_bytes(self):
+        self.init()
+        for index in range(33):
+            title = 'a' * 140 if index == 0 else '\U0001f680' * 140
+            self.add(f'task-{index:02}', '--title', title)
+            if index < 20:
+                self.call('claim', f'task-{index:02}', '--holder', 'worker')
+        data = self.call('surface')['data']
+        self.assertEqual(len(data['inflight']), 20)
+        self.assertEqual(len(data['queue']), 12)
+        self.assertEqual(data['overflow']['queue'], 1)
+        command = [BIN, '--home', str(self.home), 'surface']
+        result = subprocess.run(command, capture_output=True, cwd=self.tmp.name, timeout=10)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertLessEqual(len(result.stdout), 32 * 1024)
+        self.assertIn(b'a' * 140, result.stdout)
+        self.assertIn(b'omitted: 1', result.stdout)
+        self.assertEqual(result.stdout, subprocess.check_output(command, cwd=self.tmp.name))
+
     def test_S09_independent_subprocess_consumer(self):
         self.init(); self.add()
         evidence = Path(self.tmp.name) / 'consumer-evidence.json'
@@ -514,8 +562,8 @@ class CoreCLI(unittest.TestCase):
         self.assertEqual(p.returncode, 0, p.stdout + p.stderr)
 
     def test_S11_artifact_contents_and_runtime_dependencies(self):
-        wheel = ROOT / 'dist/orion_pm-0.1.0-py3-none-any.whl'
-        source = ROOT / 'dist/orion_pm-0.1.0.tar.gz'
+        wheel = ROOT / 'dist/orion_pm-0.1.1-py3-none-any.whl'
+        source = ROOT / 'dist/orion_pm-0.1.1.tar.gz'
         self.assertTrue(wheel.exists()); self.assertTrue(source.exists())
         with zipfile.ZipFile(wheel) as archive:
             names = archive.namelist()

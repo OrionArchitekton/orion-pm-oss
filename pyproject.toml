@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "orion-pm"
-version = "0.1.0"
+version = "0.1.1"
 description = "Local task coordination for cooperating agents"
 readme = "README.md"
 license = "MIT"

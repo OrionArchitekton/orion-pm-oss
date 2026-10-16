@@ -285,6 +285,8 @@ def triage(s, task):
 
 def overdue(s, store_id):
     tasks, issues = s.corpus()
+    _, scan_issues = corpus(s)
+    issues = [*issues, *scan_issues]
     items = []
     for task in tasks:
         report = triage(s, task)

@@ -1,6 +1,6 @@
 # Orion PM core
 
-MIT-licensed v0.1.0. Local task coordination for cooperating agents, with
+MIT-licensed v0.1.1. Local task coordination for cooperating agents, with
 structural exclusive claims, exact generation guards, durable task revisions,
 conservative recovery, bounded evidence references and read-only views.
 
@@ -13,13 +13,13 @@ Browser/phone leases and desktop request delivery stay with those tools.
 Use a dedicated virtual environment and an explicit new store. Keep the new
 executable separate from any existing PM installation.
 
-Download the wheel and `SHA256SUMS` from the [v0.1.0 release](https://github.com/OrionArchitekton/orion-pm-oss/releases/tag/v0.1.0).
+Download the wheel and `SHA256SUMS` from the [v0.1.1 release](https://github.com/OrionArchitekton/orion-pm-oss/releases/tag/v0.1.1).
 From a source checkout (for the example project config), place the wheel in `dist/`
 and verify its checksum against the release manifest before installing.
 
 ```sh
 python3 -m venv .venv
-.venv/bin/pip install --no-index --no-deps dist/orion_pm-0.1.0-py3-none-any.whl
+.venv/bin/pip install --no-index --no-deps dist/orion_pm-0.1.1-py3-none-any.whl
 .venv/bin/orion-pm --json --home /tmp/pm-example init --projects examples/project-config.json
 .venv/bin/orion-pm --json --home /tmp/pm-example add --id example --title "Example work" --project sample --status todo
 .venv/bin/orion-pm --json --home /tmp/pm-example probe example
