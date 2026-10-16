@@ -47,11 +47,11 @@ Use the [local-store runbook](runbooks/local-store.md) for PM ownership recovery
 
 ## Bounded compatibility observation
 
-The private hand-run check on 2026-10-15 used:
+The public-artifact check on 2026-10-15 used:
 
 | Component | Observed artifact/environment |
 |---|---|
-| PM | Installed 0.1.0 wheel, API 1, store format 1 |
+| PM | Public 0.1.1 wheel, API 1, store format 1 |
 | Browser | Released 0.1.0 wheel, SHA-256 `ba793c5271dc7f1909f88823be88195b84f43fbbf58e5e9cd39c5efb085a746a` |
 | Driver | agent-browser 0.25.4 |
 | Host | CPython 3.11.14, WSL2 Linux, ext4, Chrome 155.0.8059.39 |
@@ -67,11 +67,9 @@ read-back showed `done` and an absent claim. The endpoint was closed, the profil
 had no remaining processes, the transient service was stopped, and the attached
 client was closed. Synthetic state and profiles were then removed.
 
-Private receipts bind the exact candidate and artifacts; operational state and
-profiles are excluded from source and package exports. The first private driver
-attempt used incorrect result/stop assumptions and truthfully left work
-unfinished. Native cleanup was observed and its exact PM generation released
-before the corrected run used a new fixture.
+The [artifact-bound receipt](releases/browser-composition-0.1.1.json) records the
+public wheel hashes, two-process result and cleanup checks. Operational state,
+profile paths, holder identifiers and raw native endpoints remain excluded.
 
 This observation covers one synthetic read on one host. It does not establish
 other browser versions, signed-in actions, phone/remote-hands compatibility,

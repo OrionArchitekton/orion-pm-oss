@@ -1,6 +1,7 @@
 include LICENSE README.md CONTRIBUTING.md SECURITY.md
 recursive-include specs *.md
 recursive-include docs *.md
+include docs/releases/browser-composition-0.1.1.json
 recursive-include examples *.py *.md *.json
 recursive-include tests *.py
 recursive-include scripts *.sh *.py
