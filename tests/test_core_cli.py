@@ -576,7 +576,8 @@ class CoreCLI(unittest.TestCase):
         with tarfile.open(source) as archive:
             names = archive.getnames()
             for required in ('README.md', 'specs/orion-pm-core-spec.md', 'docs/runbooks/local-store.md',
-                             'examples/cli_consumer.py', 'scripts/check.py'):
+                             'examples/cli_consumer.py', 'scripts/check.py',
+                             'docs/releases/browser-composition-0.1.1.json'):
                 self.assertTrue(any(n.endswith('/' + required) for n in names), required)
             self.assertFalse(any('/.private/' in n or '/.venv/' in n or '/.git/' in n for n in names))
 
