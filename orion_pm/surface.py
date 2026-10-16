@@ -37,7 +37,9 @@ def projection(s, store_id):
         if task['status'] == 'in_progress' and c['state'] == 'live':
             inflight.append(s.summary(task))
         if c['state'] in ('expired', 'unknown') or task['status'] == 'in_progress' and c['state'] == 'absent':
-            stale.append({'task_id': task['id'], 'revision': store.revision(task), 'claim': c, 'issue': c['state']})
+            report = claim.triage(s, task)
+            stale.append({'task_id': task['id'], 'revision': report['revision'],
+                          'claim': report['claim'], 'issue': report['disposition']})
         if task['status'] in ('backlog', 'todo') and c['state'] == 'absent':
             queue.append(task)
     queue.sort(key=lambda t: t['id'])
@@ -57,7 +59,15 @@ def projection(s, store_id):
 def render(data):
     # Escaping via JSON string form keeps terminal control sequences inert.
     import json
-    clip = lambda s: json.dumps(str(s)[:140], ensure_ascii=True)
+    def clip(value):
+        text = str(value)[:140]
+        rendered = json.dumps(text, ensure_ascii=True)
+        # Bound the escaped field, including quotes. With at most 72 rows
+        # and two fields per row, this keeps the complete text below 32 KiB.
+        while len(rendered.encode('ascii')) > 142:
+            text = text[:-1]
+            rendered = json.dumps(text, ensure_ascii=True)
+        return rendered
     lines = ['Orion PM local tasks', 'State: ' + data['completeness'],
              'Claim admission: ' + data['admission']['state']]
     for label in ('inflight', 'stale', 'claim_issues', 'queue'):

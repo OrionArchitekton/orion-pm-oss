@@ -26,8 +26,8 @@ def run(command, name, cwd=ROOT, env=None):
 
 
 run([sys.executable, '-m', 'build', '--no-isolation'], 'final-build')
-wheel = ROOT / 'dist/orion_pm-0.1.0-py3-none-any.whl'
-sdist = ROOT / 'dist/orion_pm-0.1.0.tar.gz'
+wheel = ROOT / 'dist/orion_pm-0.1.1-py3-none-any.whl'
+sdist = ROOT / 'dist/orion_pm-0.1.1.tar.gz'
 manifest = {'artifacts': {}, 'profiles': {}}
 for artifact in (wheel, sdist):
     manifest['artifacts'][artifact.name] = hashlib.sha256(artifact.read_bytes()).hexdigest()
@@ -42,7 +42,7 @@ with tempfile.TemporaryDirectory(prefix='pm-core-conformance-') as tmp:
             if Path(member.name).is_absolute() or '..' in parts or not (member.isfile() or member.isdir()):
                 raise RuntimeError('Unsafe sdist member')
         archive.extractall(source_dir)
-    extracted = source_dir / 'orion_pm-0.1.0'
+    extracted = source_dir / 'orion_pm-0.1.1'
     rebuilt = tmp / 'sdist-wheel'
     run([sys.executable, '-m', 'build', '--no-isolation', '--wheel', '--outdir', str(rebuilt)],
         'sdist-rebuild', cwd=extracted)

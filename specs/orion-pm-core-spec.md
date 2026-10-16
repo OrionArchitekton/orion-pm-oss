@@ -1,11 +1,11 @@
 # Orion PM core v0.1 specification
 
-Status: private standalone implementation contract, 2026-10-15.
+Status: public standalone implementation contract, 2026-10-15.
 This specifies required behavior and does not replace the existing estate PM
 specification, runtime, or store. Installed behavior is established by separate
 artifact-specific test receipts, not by this document.
 
-Implementation profile: private `0.1.0`, API 1/store format 1. All required
+Implementation profile: `0.1.1`, API 1/store format 1. All required
 capabilities are included; optional `git-recovery.v1` is omitted. Its flags reject,
 and triage remains local/report-only. MIT is selected for this private release candidate. This profile has no
 publication approval. Actual-browser and additional-platform receipts remain separate from
@@ -405,8 +405,8 @@ reported separately: a queue is potential work, never permission to acquire it.
 Surface is an observation, not a reservation or selection guarantee. It cannot
 make a strict claim-next selection safe when corpus validation failed.
 
-Text and JSON use one validated projection. Text clips human fields to 140
-characters, displays at most 20 each of in-flight/stale/issues and 12 queue entries,
+Text and JSON use one validated projection. Text clips human fields to at most 140
+characters, further limiting escaped fields to 142 ASCII bytes including quotes, displays at most 20 each of in-flight/stale/issues and 12 queue entries,
 and states omitted counts. JSON collections use the same limits and overflow
 counts so a display cannot accidentally export the whole board. Neither format
 embeds a current timestamp, session ID, hostname, or volatile duration; output is
