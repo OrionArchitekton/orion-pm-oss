@@ -1,5 +1,7 @@
 # Orion PM core
 
+Part of [Cosmocrat OS](https://www.cosmocrat.ai/tools#orion-pm).
+
 MIT-licensed v0.1.1. Local task coordination for cooperating agents, with
 structural exclusive claims, exact generation guards, durable task revisions,
 conservative recovery, bounded evidence references and read-only views.
